@@ -49,7 +49,7 @@ struct handler
 	}
 };
 
-void CLog::SetSeverityMin(boost::log::trivial::severity_level lv) {
+void CLog::set_severity_min(boost::log::trivial::severity_level lv) {
 
 	logging::core::get()->set_filter
 		(
@@ -64,13 +64,6 @@ void CLog::GlobalAttribute()
 	logging::core::get()->add_global_attribute("TimeStamp", attrs::local_clock());
 	logging::core::get()->add_global_attribute("RecordID", attrs::counter< unsigned int >());
 
-	//There is no cross platform way that I know.
-#ifdef _WIN32
-	WCHAR moduleFileName[MAX_PATH];
-	GetModuleFileName(NULL, moduleFileName, MAX_PATH);
-	PathRemoveFileSpec(moduleFileName);
-	SetCurrentDirectory(moduleFileName);
-#endif
 	/*logging::core::get()->set_exception_handler(
 	logging::make_exception_handler<logging::runtime_error, std::exception>(handler{}));*/
 }
@@ -89,7 +82,7 @@ void trace_formatter(logging::record_view const& rec, logging::wformatting_ostre
 }
 
 
-void CLog::AddConsoleSink(bool trace)
+void CLog::add_console_sink(bool trace)
 {
 	boost::shared_ptr<sinks::wtext_ostream_backend> backend = boost::make_shared<sinks::wtext_ostream_backend>();
 	backend->add_stream(boost::shared_ptr<std::wostream>(&std::wclog, boost::null_deleter()));
@@ -120,7 +113,7 @@ void CLog::AddConsoleSink(bool trace)
 	logging::core::get()->add_sink(sink);
 }
 
-void CLog::AddDebugOutputSink()
+void CLog::add_debug_output_sink()
 {
 	boost::shared_ptr<sinks::wdebug_output_backend> backend = boost::make_shared<sinks::wdebug_output_backend>();
 
@@ -137,31 +130,17 @@ void CLog::AddDebugOutputSink()
 
 	logging::core::get()->add_sink(sink);
 }
-
-void CLog::AddTextFileSink()
+void CLog::set_log_file(std::string file_name){
+	log_file_name=file_name;
+}
+void CLog::add_text_file_sink()
 {
 	int max_storage_size_ = 20 * 1024 * 1024;
 	int max_file_size_ = 1 * 1024 * 1024;
 	long file_ordering_window_sec_ = 1;
 
-	char moduleFileName[MAX_PATH];
-	GetModuleFileNameA(NULL, moduleFileName, MAX_PATH);
-	boost::filesystem::path p(moduleFileName);
-
-	char computerName[256];
-	DWORD dwSize = 256;
-	GetComputerNameA(computerName, &dwSize); //Get the computer name
-
-	std::string file_name_format;
-	file_name_format += "log\\";
-	file_name_format += p.filename().string();
-	file_name_format += ".";
-	file_name_format += computerName;
-	//file_name_format += ".%Y-%m-%d_%H-%M-%S_%N.log";
-	file_name_format += ".%Y-%m-%d_%N.log";
-
 	boost::shared_ptr< sinks::text_file_backend > file_backend = boost::make_shared< sinks::text_file_backend >(
-		keywords::file_name = file_name_format,
+		keywords::file_name = log_file_name,
 		keywords::rotation_size = max_file_size_,      //setting_.max_file_size_,
 
 

@@ -18,7 +18,6 @@
 //				http://www.boost.org/doc/libs/1_65_1/libs/log/doc/html/index.html
 
 #pragma once
-#define BOOST_LOG_DYN_LINK
 #define BOOST_PHOENIX_NO_VARIADIC_FUNCTION_EVAL
 #define BOOST_NO_CXX11_VARIADIC_TEMPLATES
 
@@ -28,12 +27,6 @@
 
 #pragma warning(disable: 4244) // possible loss of data
 
-#define BOOST_LOG_ALL_LINK
-#ifdef CLOG_EXPORTS
-#define CLOG_API __declspec(dllexport)
-#else
-#define CLOG_API __declspec(dllimport)
-#endif
 
 BOOST_LOG_INLINE_GLOBAL_LOGGER_DEFAULT(slg, boost::log::sources::wseverity_logger< boost::log::trivial::severity_level >)
 
@@ -43,15 +36,21 @@ BOOST_LOG_INLINE_GLOBAL_LOGGER_DEFAULT(slg, boost::log::sources::wseverity_logge
 	<< boost::log::add_value("Function", __FUNCTION__)
 //<< boost::log::add_value("Function", BOOST_CURRENT_FUNCTION)
 
-class CLOG_API CLog
+class CLog
 {
 	void GlobalAttribute();
 public:
 	CLog();
 	~CLog();
 
-	void AddConsoleSink(bool trace = false);
-	void AddDebugOutputSink();
-	void AddTextFileSink();
-	void SetSeverityMin(boost::log::trivial::severity_level lv);
+	void add_console_sink(bool trace = false);
+	void add_debug_output_sink();
+	void add_text_file_sink();
+	void set_severity_min(boost::log::trivial::severity_level lv);
+	void set_log_file(std::string file_name);
+	std::string get_log_file(){
+		return this->log_file_name;
+	}
+	private:
+	std::string log_file_name;
 };
