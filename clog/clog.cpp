@@ -15,7 +15,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/date_time.hpp>
 #include <boost/date_time/local_time/local_time.hpp>
-
+#include <filesystem>
 
 namespace src = boost::log::sources;
 namespace logging = boost::log;
@@ -179,16 +179,17 @@ void CLog::add_text_file_sink()
 		% logging::trivial::severity
 		% expr::message
 		);
-
-	sink->locked_backend()->set_file_collector(
+/*
+		std::filesystem::path log_folder(log_file_name);
+		sink->locked_backend()->set_file_collector(
 		sinks::file::make_collector(
-		keywords::target = "log",
+		keywords::target =  log_folder.parent_path()+"\\log",
 		keywords::max_size = max_storage_size_
 		//keywords::max_size = max_storage_size_
 		)
 		);
 
 
-	sink->locked_backend()->scan_for_files(sinks::file::scan_matching);
+	sink->locked_backend()->scan_for_files(sinks::file::scan_matching);*/
 	logging::core::get()->add_sink(sink);
 }
