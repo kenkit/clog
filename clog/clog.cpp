@@ -1,5 +1,4 @@
-#pragma once
-#include "stdafx.h"
+
 #include "clog.h"
 #include <boost/core/null_deleter.hpp>
 #include <boost/locale/generator.hpp>
@@ -15,7 +14,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/date_time.hpp>
 #include <boost/date_time/local_time/local_time.hpp>
-#include <filesystem>
 
 namespace src = boost::log::sources;
 namespace logging = boost::log;
