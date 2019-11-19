@@ -44,7 +44,9 @@ public:
 	~CLog();
 
 	void add_console_sink(bool trace = false);
-	void add_debug_output_sink();
+	#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+		void add_debug_output_sink();
+	#endif
 	void add_text_file_sink();
 	void set_severity_min(boost::log::trivial::severity_level lv);
 	void set_log_file(std::string file_name);
