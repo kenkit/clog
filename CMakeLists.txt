@@ -19,12 +19,6 @@ target_link_libraries(clog
 ${Boost_LOG_SETUP_LIBRARY}
 ${Boost_LOG_LIBRARY}
 ${Boost_ATOMIC_LIBRARY})
-<<<<<<< HEAD
-
-if(NOT WIN32)
-  target_compile_definitions(clog PRIVATE BOOST_LOG_DYN_LINK=1)
-endif()
-=======
 if(NOT WIN32)
   add_definitions(-DENABLE_CLOG=1 -DBOOST_LOG_DYN_LINK=1 )
   set(CMAKE_CXX_FLAGS_DEBUG "-fPIC ${CMAKE_CXX_FLAGS_DEBUG}")
@@ -33,4 +27,3 @@ if(NOT WIN32)
 else()
   add_definitions(-DENABLE_CLOG=1)
 endif()
->>>>>>> bce3583
