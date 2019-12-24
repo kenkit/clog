@@ -19,4 +19,11 @@ target_link_libraries(clog
 ${Boost_LOG_SETUP_LIBRARY}
 ${Boost_LOG_LIBRARY}
 ${Boost_ATOMIC_LIBRARY})
-target_compile_definitions(clog PRIVATE BOOST_LOG_DYN_LINK=1)
+if(NOT WIN32)
+  add_definitions(-DENABLE_CLOG=1 -DBOOST_LOG_DYN_LINK=1 )
+  set(CMAKE_CXX_FLAGS_DEBUG "-fPIC ${CMAKE_CXX_FLAGS_DEBUG}")
+  set(CMAKE_CXX_FLAGS_RELEASE "-fPIC ${CMAKE_CXX_FLAGS_RELEASE}")
+  set(CMAKE_CXX_FLAGS "-fPIC ${CMAKE_CXX_FLAGS}")
+else()
+  add_definitions(-DENABLE_CLOG=1)
+endif()
