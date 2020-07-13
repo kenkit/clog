@@ -7,9 +7,9 @@ if(NOT Boost_FOUND)
     set(Boost_USE_STATIC_LIBS OFF)
   endif() 
   set(Boost_USE_MULTITHREADED ON)  
-  find_package(Boost COMPONENTS system thread timer filesystem regex log ) 
+  find_package(Boost COMPONENTS system  timer filesystem regex log ) 
 endif()
-include_directories(${PROJECT_SOURCE_DIR}/include ${Boost_INCLUDE_DIRS})
+include_directories(${PROJECT_SOURCE_DIR}/include ${Boost_INCLUDE_DIR})
 
 
 add_library(clog STATIC ${PROJECT_SOURCE_DIR}/clog/clog.cpp)
