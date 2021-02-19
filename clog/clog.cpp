@@ -1,5 +1,4 @@
-#pragma once
-#include "stdafx.h"
+
 #include "clog.h"
 #include <boost/core/null_deleter.hpp>
 #include <boost/locale/generator.hpp>
@@ -15,7 +14,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/date_time.hpp>
 #include <boost/date_time/local_time/local_time.hpp>
-#include <filesystem>
 
 namespace src = boost::log::sources;
 namespace logging = boost::log;
@@ -112,7 +110,7 @@ void CLog::add_console_sink(bool trace)
 
 	logging::core::get()->add_sink(sink);
 }
-
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
 void CLog::add_debug_output_sink()
 {
 	boost::shared_ptr<sinks::wdebug_output_backend> backend = boost::make_shared<sinks::wdebug_output_backend>();
@@ -130,6 +128,7 @@ void CLog::add_debug_output_sink()
 
 	logging::core::get()->add_sink(sink);
 }
+#endif
 void CLog::set_log_file(std::string file_name){
 	log_file_name=file_name;
 }
