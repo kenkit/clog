@@ -168,7 +168,7 @@ void CLog::add_text_file_sink()
 
 	boost::shared_ptr< sink_t > sink(new sink_t(
 		file_backend,
-		keywords::order = logging::make_attr_ordering("RecordID", std::less< unsigned int >()),
+		keywords::order = logging::make_attr_ordering< unsigned int >("RecordID", std::less< unsigned int >()),
 		keywords::ordering_window = boost::posix_time::seconds(file_ordering_window_sec_)
 		));
 
